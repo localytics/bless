@@ -15,9 +15,7 @@ VALID_TEST_REQUEST = {
     "remote_username": "user",
     "public_key_to_sign": EXAMPLE_RSA_PUBLIC_KEY,
     "command": "ssh user@server",
-    "bastion_ip": "127.0.0.1",
-    "bastion_user": "user",
-    "bastion_user_ip": "127.0.0.1"
+    "bastion_user": "user"
 }
 
 os.environ['AWS_REGION'] = 'us-west-2'
@@ -52,9 +50,7 @@ def test_local_request_invalid_pub_key():
         "remote_username": "user",
         "public_key_to_sign": EXAMPLE_ED25519_PUBLIC_KEY,
         "command": "ssh user@server",
-        "bastion_ip": "127.0.0.1",
-        "bastion_user": "user",
-        "bastion_user_ip": "127.0.0.1"
+        "bastion_user": "user"
     }
     with pytest.raises(TypeError):
         lambda_handler(invalid_key_request, context=Context,

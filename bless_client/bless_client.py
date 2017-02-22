@@ -13,13 +13,8 @@ Usage:
 
     bastion_user: The user on the bastion, who is initiating the SSH request.
 
-    bastion_user_ip: The IP of the user accessing the bastion.
-
     remote_username: The username on the remote server that will be used in the SSH
     request.  This is enforced in the issued certificate.
-
-    bastion_ip: The source IP where the SSH connection will be initiated from.  This is
-    enforced in the issued certificate.
 
     bastion_command: Text information about the SSH request of the bastion_user.
 
@@ -40,22 +35,22 @@ import os
 
 
 def main(argv):
-    if len(argv) != 9:
+    if len(argv) != 6:
         print (
-            'Usage: bless_client.py region lambda_function_name bastion_user bastion_user_ip '
-            'remote_username bastion_ip bastion_command <id_rsa.pub to sign> '
+            'Usage: bless_client.py region lambda_function_name bastion_user '
+            'remote_username <id_rsa.pub to sign> '
             '<output id_rsa-cert.pub>')
         return -1
 
-    region, lambda_function_name, bastion_user, bastion_user_ip, remote_username, bastion_ip, \
-    bastion_command, public_key_filename, certificate_filename = argv
+    region, lambda_function_name, bastion_user, remote_username, \
+    public_key_filename, certificate_filename = argv
 
     with open(public_key_filename, 'r') as f:
         public_key = f.read()
 
-    payload = {'bastion_user': bastion_user, 'bastion_user_ip': bastion_user_ip,
-               'remote_username': remote_username, 'bastion_ip': bastion_ip,
-               'command': bastion_command, 'public_key_to_sign': public_key}
+    payload = {'bastion_user': bastion_user,
+               'remote_username': remote_username,
+               'public_key_to_sign': public_key}
     payload_json = json.dumps(payload)
 
     print('Executing:')
