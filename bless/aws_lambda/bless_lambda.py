@@ -101,17 +101,16 @@ def lambda_handler(event, context=None, ca_private_key_password=None,
     cert_builder.set_valid_after(valid_after)
 
     # cert_builder is needed to obtain the SSH public key's fingerprint
-    key_id = 'request[{}] for[{}] from[{}] command[{}] ssh_key:[{}]  ca:[{}] valid_to[{}]'.format(
-        context.aws_request_id, request.bastion_user, request.bastion_user_ip, request.command,
+    key_id = 'request[{}] for[{}] ssh_key:[{}]  ca:[{}] valid_to[{}]'.format(
+        context.aws_request_id, request.bastion_user,
         cert_builder.ssh_public_key.fingerprint, context.invoked_function_arn,
         time.strftime("%Y/%m/%d %H:%M:%S", time.gmtime(valid_before)))
-    cert_builder.set_critical_option_source_address(request.bastion_ip)
     cert_builder.set_key_id(key_id)
     cert = cert_builder.get_cert_file()
 
     logger.info(
-        'Issued a cert to bastion_ip[{}] for the remote_username of [{}] with the key_id[{}] and '
+        'Issued a cert for the remote_username of [{}] with the key_id[{}] and '
         'valid_from[{}])'.format(
-            request.bastion_ip, request.remote_username, key_id,
+            request.remote_username, key_id,
             time.strftime("%Y/%m/%d %H:%M:%S", time.gmtime(valid_after))))
     return cert

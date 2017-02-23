@@ -21,7 +21,7 @@ setup(
         'boto3==1.3.1',
         'botocore==1.4.37',
         'cffi==1.7.0',
-        'cryptography==1.4',
+        'cryptography==1.7.1',
         'docutils==0.12',
         'enum34==1.1.6',
         'futures==3.0.5',
